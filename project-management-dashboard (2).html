@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Management Approaches Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    
+    h2 {
+      color: #3498db;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #f1f1f1;
+      margin-top: 30px;
+    }
+    
+    h3 {
+      color: #2c3e50;
+      margin-top: 25px;
+    }
+    
+    .tab-container {
+      margin-bottom: 20px;
+    }
+    
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #f1f1f1;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      margin-right: 5px;
+      border-radius: 5px 5px 0 0;
+    }
+    
+    .tab.active {
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+    
+    .tab-content {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-top: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .approach-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    
+    .approach-button {
+      padding: 8px 15px;
+      background-color: #f1f1f1;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .approach-button.active {
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+    
+    .approach-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .approach-content.active {
+      display: block;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .card {
+      background-color: #f8f9fa;
+      border-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .benefits {
+      color: #27ae60;
+    }
+    
+    .challenges {
+      color: #e74c3c;
+    }
+    
+    ul {
+      padding-left: 20px;
+    }
+    
+    .visual-container {
+      background-color: #f8f9fa;
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .visual-title {
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    
+    .visual {
+      height: 120px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    
+    .adaptive {
+      background-color: #9bd8ff;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-weight: bold;
+    }
+    
+    .predictive {
+      background-color: #ffcba4;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-weight: bold;
+    }
+    
+    .sequential .adaptive, .sequential .predictive {
+      width: 50%;
+      float: left;
+    }
+    
+    .hybrid-grid {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+    }
+    
+    .hybrid-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    .predictive-with-adaptive .adaptive {
+      position: absolute;
+      left: 12.5%;
+      width: 25%;
+      height: 100%;
+      border-right: 1px solid #ddd;
+    }
+    
+    .predictive-with-adaptive .predictive {
+      width: 100%;
+    }
+    
+    .adaptive-with-predictive .predictive {
+      position: absolute;
+      right: 12.5%;
+      width: 25%;
+      height: 100%;
+      border-left: 1px solid #ddd;
+    }
+    
+    .adaptive-with-predictive .adaptive {
+      width: 100%;
+    }
+    
+    .pmi-level-1 .adaptive {
+      position: absolute;
+      left: 10%;
+      width: 20%;
+      height: 100%;
+      border-right: 1px solid #ddd;
+    }
+    
+    .pmi-level-1 .predictive {
+      width: 100%;
+    }
+    
+    .pmi-level-2 .adaptive {
+      position: absolute;
+      left: 20%;
+      width: 40%;
+      height: 100%;
+      border-right: 1px solid #ddd;
+    }
+    
+    .pmi-level-2 .predictive {
+      width: 100%;
+    }
+    
+    .pmi-level-3 .predictive {
+      position: absolute;
+      right: 12.5%;
+      width: 25%;
+      height: 100%;
+      border-left: 1px solid #ddd;
+    }
+    
+    .pmi-level-3 .adaptive {
+      width: 100%;
+    }
+    
+    .visual-caption {
+      text-align: center;
+      font-size: 0.9em;
+      color: #666;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+    
+    .composition-chart {
+      margin-top: 10px;
+    }
+    
+    .chart-bar {
+      height: 30px;
+      margin-bottom: 5px;
+      border-radius: 3px;
+      position: relative;
+    }
+    
+    .chart-label {
+      position: absolute;
+      left: 10px;
+      top: 5px;
+      color: #333;
+    }
+    
+    .chart-value {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      color: #333;
+    }
+    
+    .adaptive-bar {
+      background-color: #9bd8ff;
+    }
+    
+    .predictive-bar {
+      background-color: #ffcba4;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Project Management Approaches Dashboard</h1>
+    
+    <div class="tab-container">
+      <div class="tabs">
+        <div class="tab active" data-tab="visual-approaches">Visual Approaches</div>
+        <div class="tab" data-tab="pmi-levels">PMI Disciplined Agile® Levels</div>
+      </div>
+      
+      <!-- Visual Approaches Tab -->
+      <div id="visual-approaches" class="tab-content active">
+        <div class="approach-selector">
+          <button class="approach-button active" data-approach="1">Approach 1</button>
+          <button class="approach-button" data-approach="2">Approach 2</button>
+          <button class="approach-button" data-approach="3">Approach 3</button>
+          <button class="approach-button" data-approach="4">Approach 4</button>
+        </div>
+        
+        <!-- Approach 1 -->
+        <div id="approach-1" class="approach-content active">
+          <h2>Adaptive Development Followed by Predictive Rollout</h2>
+          <p>The early processes use an adaptive development life cycle, which is then followed by a predictive rollout phase.</p>
+          
+          <h3>Strategy</h3>
+          <p>Use when innovation and exploration are needed initially, but a structured implementation is required later. Particularly useful for new product development with uncertain requirements but fixed delivery dates.</p>
+          
+          <div class="grid">
+            <div class="card">
+              <h3>Approach Composition</h3>
+              <div class="composition-chart">
+                <div class="chart-bar adaptive-bar" style="width: 50%;">
+                  <span class="chart-label">Adaptive</span>
+                  <span class="chart-value">50%</span>
+                </div>
+                <div class="chart-bar predictive-bar" style="width: 50%;">
+                  <span class="chart-label">Predictive</span>
+                  <span class="chart-value">50%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Recommended Use Cases</h3>
+              <ul>
+                <li>New product launches</li>
+                <li>Market testing followed by full release</li>
+                <li>R&D projects</li>
+                <li>Systems with uncertain requirements</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="grid">
+            <div class="card">
+              <h3 class="benefits">Benefits</h3>
+              <ul>
+                <li>Flexibility in early stages</li>
+                <li>Structured delivery</li>
+                <li>Reduced risk in implementation</li>
+                <li>Clear transition point</li>
+              </ul>
+            </div>
+            
+            <div class="card">
+              <h3 class="challenges">Challenges</h3>
+              <ul>
+                <li>Transition management</li>
+                <li>Documentation handover</li>
+                <li>Team restructuring needed</li>
+                <li>Cultural shift required</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="visual-container">
+            <div class="visual-title">Visual Representation</div>
+            <div class="visual sequential">
+              <div class="adaptive">Adaptive</div>
+              <div class="predictive">Predictive</div>
+            </div>
+            <div class="visual-caption">Sequential approach: Adaptive followed by Predictive</div>
+          </div>
+        </div>
+        
+        <!-- Approach 2 -->
+        <div id="approach-2" class="approach-content">
+          <h2>Hybrid of Adaptive and Predictive Approaches Used Simultaneously</h2>
+          <p>A combination of adaptive and predictive approaches throughout the life cycle.</p>
+          
+          <h3>Strategy</h3>
+          <p>Best for complex projects requiring both flexibility and structure simultaneously. Different workstreams may follow different methodologies based on their nature.</p>
+          
+          <div class="grid">
+            <div class="card">
+              <h3>Approach Composition</h3>
+              <div class="composition-chart">
+                <div class="chart-bar adaptive-bar" style="width: 50%;">
+                  <span class="chart-label">Adaptive</span>
+                  <span class="chart-value">50%</span>
+                </div>
+                <div class="chart-bar predictive-bar" style="width: 50%;">
+                  <span class="chart-label">Predictive</span>
+                  <span class="chart-value">50%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Recommended Use Cases</h3>
+              <ul>
+                <li>Enterprise transformations</li>
+                <li>Multi-disciplinary projects</li>
+                <li>Projects with diverse stakeholders</li>
+                <li>Programs with multiple workstreams</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="grid">
+            <div class="card">
+              <h3 class="benefits">Benefits</h3>
+              <ul>
+                <li>Maximizes team strengths</li>
+                <li>Balanced approach</li>
+                <li>Adaptable to different work types</li>
+                <li>Comprehensive risk management</li>
+              </ul>
+            </div>
+            
+            <div class="card">
+              <h3 class="challenges">Challenges</h3>
+              <ul>
+                <li>Complex coordination</li>
+                <li>Potential methodology conflicts</li>
+                <li>Increased communication needs</li>
+                <li>Requires experienced managers</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="visual-container">
+            <div class="visual-title">Visual Representation</div>
+            <div class="visual hybrid-grid">
+              <div class="hybrid-row">
+                <div class="adaptive">Adaptive</div>
+                <div class="adaptive">Adaptive</div>
+                <div class="adaptive">Adaptive</div>
+              </div>
+              <div class="hybrid-row">
+                <div class="predictive">Predictive</div>
+                <div class="predictive">Predictive</div>
+                <div class="predictive">Predictive</div>
+              </div>
+            </div>
+            <div class="visual-caption">Simultaneous use of both approaches</div>
+          </div>
+        </div>
+        
+        <!-- Approach 3 -->
+        <div id="approach-3" class="approach-content">
+          <h2>Largely Predictive Approach With an Adaptive Component</h2>
+          <p>A small adaptive element within a primarily predictive project is used.</p>
+          
+          <h3>Strategy</h3>
+          <p>Appropriate for well-understood domains that require some experimentation or exploration in specific areas. Maintains overall structure while allowing targeted flexibility.</p>
+          
+          <div class="grid">
+            <div class="card">
+              <h3>Approach Composition</h3>
+              <div class="composition-chart">
+                <div class="chart-bar adaptive-bar" style="width: 25%;">
+                  <span class="chart-label">Adaptive</span>
+                  <span class="chart-value">25%</span>
+                </div>
+                <div class="chart-bar predictive-bar" style="width: 75%;">
+                  <span class="chart-label">Predictive</span>
+                  <span class="chart-value">75%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Recommended Use Cases</h3>
+              <ul>
+                <li>Systems integration with new components</li>
+                <li>Infrastructure updates</li>
+                <li>Regulatory projects with innovation opportunities</li>
+                <li>Process improvement initiatives</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="grid">
+            <div class="card">
+              <h3 class="benefits">Benefits</h3>
+              <ul>
+                <li>Stable foundation</li>
+                <li>Targeted innovation</li>
+                <li>Easier governance</li>
+                <li>Predictable timeline with flexibility zones</li>
+              </ul>
+            </div>
+            
+            <div class="card">
+              <h3 class="challenges">Challenges</h3>
+              <ul>
+                <li>Containing adaptive elements</li>
+                <li>Resistance to experimental components</li>
+                <li>Integration challenges</li>
+                <li>Potential schedule impacts</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="visual-container">
+            <div class="visual-title">Visual Representation</div>
+            <div class="visual predictive-with-adaptive">
+              <div class="predictive">Predictive</div>
+              <div class="adaptive">Adaptive</div>
+            </div>
+            <div class="visual-caption">Mostly Predictive with an Adaptive component</div>
+          </div>
+        </div>
+        
+        <!-- Approach 4 -->
+        <div id="approach-4" class="approach-content">
+          <h2>Largely Adaptive Approach With a Predictive Component</h2>
+          <p>A primarily adaptive approach that incorporates predictive elements for specific components.</p>
+          
+          <h3>Strategy</h3>
+          <p>Ideal for innovative projects with high uncertainty but with some components that must follow strict guidelines or regulations. Maintains agility while ensuring compliance.</p>
+          
+          <div class="grid">
+            <div class="card">
+              <h3>Approach Composition</h3>
+              <div class="composition-chart">
+                <div class="chart-bar adaptive-bar" style="width: 75%;">
+                  <span class="chart-label">Adaptive</span>
+                  <span class="chart-value">75%</span>
+                </div>
+                <div class="chart-bar predictive-bar" style="width: 25%;">
+                  <span class="chart-label">Predictive</span>
+                  <span class="chart-value">25%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Recommended Use Cases</h3>
+              <ul>
+                <li>Startups developing regulated products</li>
+                <li>Digital transformation initiatives</li>
+                <li>User experience-driven projects</li>
+                <li>Exploratory research with defined deliverables</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="grid">
+            <div class="card">
+              <h3 class="benefits">Benefits</h3>
+              <ul>
+                <li>Maximum flexibility</li>
+                <li>Innovation-friendly</li>
+                <li>Quick adaptation to change</li>
+                <li>Controlled critical elements</li>
+              </ul>
+            </div>
+            
+            <div class="card">
+              <h3 class="challenges">Challenges</h3>
+              <ul>
+                <li>Maintaining overall coherence</li>
+                <li>Meeting fixed deadlines</li>
+                <li>Documentation challenges</li>
+                <li>Balancing freedom and control</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="visual-container">
+            <div class="visual-title">Visual Representation</div>
+            <div class="visual adaptive-with-predictive">
+              <div class="adaptive">Adaptive</div>
+              <div class="predictive">Predictive</div>
+            </div>
+            <div class="visual-caption">Mostly Adaptive with a Predictive component</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- PMI Levels Tab -->
+      <div id="pmi-levels" class="tab-content">
+        <div class="approach-selector">
+          <button class="approach-button active" data-level="1">Hybrid Level 1</button>
+          <button class="approach-button" data-level="2">Hybrid Level 2</button>
+          <button class="approach-button" data-level="3">Hybrid Level 3</button>
+        </div>
+        
+        <!-- PMI Level 1 -->
+        <div id="pmi-level-1" class="approach-content active">
+          <div class="pmi-header">
+            <h2>Hybrid Level 1</h2>
+            <span class="pmi-badge">PMI Disciplined Agile®</span>
+          </div>
+          
+          <p>A predictive approach is the dominant contributor to the way of working. Meanwhile, some adaptive elements are leveraged to reduce specific project pain points.</p>
+          
+          <div class="grid">
+            <div class="card">
+              <h3>Approach Composition</h3>
+              <div class="composition-chart">
+                <div class="chart-bar adaptive-bar" style="width: 25%;">
+                  <span class="chart-label">Adaptive</span>
+                  <span class="chart-value">25%</span>
+                </div>
+                <div class="chart-bar predictive-bar" style="width: 75%;">
+                  <span class="chart-label">Predictive</span>
+                  <span class="chart-value">75%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Example</h3>
+              <p>Using daily stand-ups within a traditional waterfall project to improve communication.</p>
+            </div>
+          </div>
+          
+          <div class="visual-container">
+            <div class="visual-title">Visual Representation</div>
+            <div class="visual pmi-level-1">
+              <div class="predictive">Predictive</div>
+              <div class="adaptive">Adaptive</div>
+            </div>
+            <div class="visual-caption">Primarily Predictive with small Adaptive elements</div>
+          </div>
+        </div>
+        
+        <!-- PMI Level 2 -->
+        <div id="pmi-level-2" class="approach-content">
+          <div class="pmi-header">
+            <h2>Hybrid Level 2</h2>
+            <span class="pmi-badge">PMI Disciplined Agile®</span>
+          </div>
+          
+          <p>A predictive approach continues to be a major contributor to the way of working. However, at this level, some portion of the project utilizes a more adaptive approach than a predictive one.</p>
+          
+          <div class="grid">
+            <div class="card">
+              <h3>Approach Composition</h3>
+              <div class="composition-chart">
+                <div class="chart-bar adaptive-bar" style="width: 40%;">
+                  <span class="chart-label">Adaptive</span>
+                  <span class="chart-value">40%</span>
+                </div>
+                <div class="chart-bar predictive-bar" style="width: 60%;">
+                  <span class="chart-label">Predictive</span>
+                  <span class="chart-value">60%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Example</h3>
+              <p>Development team works in sprints while planning and deployment follow a predictive approach.</p>
+            </div>
+          </div>
+          
+          <div class="visual-container">
+            <div class="visual-title">Visual Representation</div>
+            <div class="visual pmi-level-2">
+              <div class="predictive">Predictive</div>
+              <div class="adaptive">Adaptive</div>
+            </div>
+            <div class="visual-caption">Predictive approach with significant Adaptive portion</div>
+          </div>
+        </div>
+        
+        <!-- PMI Level 3 -->
+        <div id="pmi-level-3" class="approach-content">
+          <div class="pmi-header">
+            <h2>Hybrid Level 3</h2>
+            <span class="pmi-badge">PMI Disciplined Agile®</span>
+          </div>
+          
+          <p>At this point on the spectrum, an adaptive approach becomes a major contributor to the way of working. Some predictive elements are used to satisfy various business constraints.</p>
+          
+          <div class="grid">
+            <div class="card">
+              <h3>Approach Composition</h3>
+              <div class="composition-chart">
+                <div class="chart-bar adaptive-bar" style="width: 75%;">
+                  <span class="chart-label">Adaptive</span>
+                  <span class="chart-value">75%</span>
+                </div>
+                <div class="chart-bar predictive-bar" style="width: 25%;">
+                  <span class="chart-label">Predictive</span>
+                  <span class="chart-value">25%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Example</h3>
+              <p>Primarily agile project with stage gates or documentation requirements to meet regulatory compliance.</p>
+            </div>
+          </div>
+          
+          <div class="visual-container">
+            <div class="visual-title">Visual Representation</div>
+            <div class="visual pmi-level-3">
+              <div class="adaptive">Adaptive</div>
+              <div class="predictive">Predictive</div>
+            </div>
+            <div class="visual-caption">Primarily Adaptive with some Predictive elements</div>
+          </div>
+        </div>
+        
+        <div class="card" style="margin-top: 20px;">
+          <h3>About PMI Disciplined Agile®</h3>
+          <p>The PMI Disciplined Agile® (DA®) tool kit describes three levels of hybrid approaches commonly found in projects across industries. These levels represent different balances between predictive and adaptive methodologies, allowing organizations to tailor their approach based on project needs and organizational context.</p>
+          <p>Each level offers a different distribution of adaptive and predictive elements, enabling teams to choose the right balance for their specific project requirements, organizational constraints, and team capabilities.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      Use the tabs above to switch between different project management frameworks
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        document.querySelectorAll('.tab').forEach(t => {
+          t.classList.remove('active');
+        });
+        
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Show selected tab content
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+    
+    // Approach switching
+    document.querySelectorAll('.approach-button').forEach(button => {
+      button.addEventListener('click', () => {
+        const parent = button.closest('.tab-content');
+        
+        // Remove active class from all buttons in the same container
+        parent.querySelectorAll('.approach-button').forEach(b => {
+          b.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        // Hide all approach contents in the same container
+        if (parent.id === 'visual-approaches') {
+          parent.querySelectorAll('.approach-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          
+          // Show selected approach content
+          document.getElementById('approach-' + button.dataset.approach).classList.add('active');
+        } else {
+          parent.querySelectorAll('.approach-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          
+          // Show selected pmi level content
+          document.getElementById('pmi-level-' + button.dataset.level).classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
