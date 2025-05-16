@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:x="urn:schemas-microsoft-com:office:excel"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="ProgId" content="Excel.Sheet">
+    <meta name="Generator" content="Microsoft Excel 15">
+    <!--[if gte mso 9]>
+    <xml>
+        <o:DocumentProperties>
+            <o:Title>Risk Management Dashboard</o:Title>
+            <o:Subject>Risk Management</o:Subject>
+            <o:Author>Risk Team</o:Author>
+            <o:Company>Your Company</o:Company>
+        </o:DocumentProperties>
+        <o:CustomDocumentProperties>
+            <o:ContentTypeId dt:dt="string">0x0101</o:ContentTypeId>
+        </o:CustomDocumentProperties>
+    </xml>
+    <![endif]-->
+    <style>
+        /* Excel-specific styles */
+        .excel-only {display:none;}
+        @media print {.excel-only {display:block;}}
+        
+        /* Dashboard styles */
+        body {
+            font-family: Calibri, Arial, sans-serif;
+            margin: 10px;
+            background-color: #FFFFFF;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #DDDDDD;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #F2F2F2;
+            font-weight: bold;
+        }
+        .dashboard-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #1F4E79;
+        }
+        .date-display {
+            font-size: 12px;
+            color: #666666;
+            margin-bottom: 15px;
+        }
+        .summary-section {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .summary-card {
+            border: 1px solid #DDDDDD;
+            padding: 10px;
+            margin-right: 15px;
+            min-width: 120px;
+            text-align: center;
+        }
+        .severe-risk {
+            border-top: 4px solid #8E44AD;
+        }
+        .high-risk {
+            border-top: 4px solid #E74C3C;
+        }
+        .medium-risk {
+            border-top: 4px solid #F39C12;
+        }
+        .low-risk {
+            border-top: 4px solid #2ECC71;
+        }
+        .total-risk {
+            border-top: 4px solid #3498DB;
+        }
+        .card-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .card-label {
+            font-size: 14px;
+            color: #666666;
+        }
+        .risk-severe-bg {
+            background-color: #F3E5F5;
+        }
+        .risk-high-bg {
+            background-color: #FFEBEE;
+        }
+        .risk-medium-bg {
+            background-color: #FFF8E1;
+        }
+        .risk-low-bg {
+            background-color: #E8F5E9;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            color: #1F4E79;
+        }
+        .note {
+            font-size: 12px;
+            color: #666666;
+            margin-top: 5px;
+        }
+        .instructions {
+            font-size: 11px;
+            color: #555555;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #F9F9F9;
+            border-left: 4px solid #3498DB;
+        }
+        .matrix-container {
+            border: 1px solid #DDDDDD;
+            margin: 15px 0;
+            padding: 10px;
+        }
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .matrix-table td {
+            width: 20%;
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .matrix-label {
+            font-size: 11px;
+            text-align: center;
+            margin: 5px 0;
+        }
+        .footer {
+            font-size: 10px;
+            color: #777777;
+            margin-top: 30px;
+            text-align: center;
+            border-top: 1px solid #EEEEEE;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">Risk Management Dashboard</div>
+    <div class="date-display">Last Updated: May 15, 2025</div>
+    
+    <div class="instructions">
+        <strong>How to use this Excel Risk Dashboard:</strong>
+        <ol>
+            <li>Enter your risk data in the "Risk Register" table below</li>
+            <li>For Impact and Likelihood, use values from 1-5 (1=lowest, 5=highest)</li>
+            <li>Risk levels will automatically update based on the Risk Matrix</li>
+            <li>Update the summary cards manually based on your risk counts</li>
+            <li>Save this file as an Excel workbook (.xlsx) for future updates</li>
+        </ol>
+    </div>
+    
+    <!-- Summary Cards -->
+    <div class="summary-section">
+        <div class="summary-card severe-risk">
+            <div class="card-label">Severe Risk</div>
+            <div class="card-number">2</div>
+            <div class="card-label">+1 from last month</div>
+        </div>
+        <div class="summary-card high-risk">
+            <div class="card-label">High Risk</div>
+            <div class="card-number">5</div>
+            <div class="card-label">+1 from last month</div>
+        </div>
+        <div class="summary-card medium-risk">
+            <div class="card-label">Medium Risk</div>
+            <div class="card-number">8</div>
+            <div class="card-label">-1 from last month</div>
+        </div>
+        <div class="summary-card low-risk">
+            <div class="card-label">Low Risk</div>
+            <div class="card-number">10</div>
+            <div class="card-label">+3 from last month</div>
+        </div>
+        <div class="summary-card total-risk">
+            <div class="card-label">Total Risks</div>
+            <div class="card-number">25</div>
+            <div class="card-label">+4 from last month</div>
+        </div>
+    </div>
+    
+    <!-- Risk Matrix -->
+    <div class="section-title">Risk Matrix</div>
+    <div class="note">The matrix below shows the risk classification based on Impact (vertical) and Likelihood (horizontal)</div>
+    
+    <div class="matrix-container">
+        <table class="matrix-table">
+            <tr>
+                <th></th>
+                <th>Likelihood 1</th>
+                <th>Likelihood 2</th>
+                <th>Likelihood 3</th>
+                <th>Likelihood 4</th>
+                <th>Likelihood 5</th>
+            </tr>
+            <tr>
+                <th>Impact 5</th>
+                <td class="risk-high-bg">High</td>
+                <td class="risk-high-bg">High</td>
+                <td class="risk-severe-bg">Severe</td>
+                <td class="risk-severe-bg">Severe</td>
+                <td class="risk-severe-bg">Severe</td>
+            </tr>
+            <tr>
+                <th>Impact 4</th>
+                <td class="risk-medium-bg">Medium</td>
+                <td class="risk-high-bg">High</td>
+                <td class="risk-high-bg">High</td>
+                <td class="risk-severe-bg">Severe</td>
+                <td class="risk-severe-bg">Severe</td>
+            </tr>
+            <tr>
+                <th>Impact 3</th>
+                <td class="risk-low-bg">Low</td>
+                <td class="risk-medium-bg">Medium</td>
+                <td class="risk-high-bg">High</td>
+                <td class="risk-high-bg">High</td>
+                <td class="risk-severe-bg">Severe</td>
+            </tr>
+            <tr>
+                <th>Impact 2</th>
+                <td class="risk-low-bg">Low</td>
+                <td class="risk-low-bg">Low</td>
+                <td class="risk-medium-bg">Medium</td>
+                <td class="risk-high-bg">High</td>
+                <td class="risk-high-bg">High</td>
+            </tr>
+            <tr>
+                <th>Impact 1</th>
+                <td class="risk-low-bg">Low</td>
+                <td class="risk-low-bg">Low</td>
+                <td class="risk-low-bg">Low</td>
+                <td class="risk-medium-bg">Medium</td>
+                <td class="risk-medium-bg">Medium</td>
+            </tr>
+        </table>
+        <div class="matrix-label">
+            <strong>Legend: </strong>
+            <span style="color: #8E44AD;">■</span> Severe Risk &nbsp;&nbsp;
+            <span style="color: #E74C3C;">■</span> High Risk &nbsp;&nbsp;
+            <span style="color: #F39C12;">■</span> Medium Risk &nbsp;&nbsp;
+            <span style="color: #2ECC71;">■</span> Low Risk
+        </div>
+    </div>
+    
+    <!-- Risk Register -->
+    <div class="section-title">Risk Register</div>
+    <table id="risk-register">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Risk Description</th>
+                <th>Category</th>
+                <th>Impact (1-5)</th>
+                <th>Likelihood (1-5)</th>
+                <th>Risk Level</th>
+                <th>Status</th>
+                <th>Target Date</th>
+                <th>Revised Date</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>R-001</td>
+                <td>Data center outage due to power failure</td>
+                <td>Operational</td>
+                <td>5</td>
+                <td>3</td>
+                <td class="risk-severe-bg">Severe</td>
+                <td>Active</td>
+                <td>Jun 30, 2025</td>
+                <td></td>
+                <td>IT Operations</td>
+            </tr>
+            <tr>
+                <td>R-002</td>
+                <td>Supply chain disruption</td>
+                <td>Strategic</td>
+                <td>4</td>
+                <td>4</td>
+                <td class="risk-severe-bg">Severe</td>
+                <td>Monitored</td>
+                <td>Aug 15, 2025</td>
+                <td>Sep 30, 2025</td>
+                <td>Procurement</td>
+            </tr>
+            <tr>
+                <td>R-003</td>
+                <td>Cybersecurity breach</td>
+                <td>Technology</td>
+                <td>5</td>
+                <td>2</td>
+                <td class="risk-high-bg">High</td>
+                <td>Active</td>
+                <td>Jul 15, 2025</td>
+                <td></td>
+                <td>Security Team</td>
+            </tr>
+            <tr>
+                <td>R-004</td>
+                <td>Regulatory compliance failure</td>
+                <td>Legal</td>
+                <td>4</td>
+                <td>2</td>
+                <td class="risk-high-bg">High</td>
+                <td>Monitored</td>
+                <td>Jun 1, 2025</td>
+                <td></td>
+                <td>Legal Dept</td>
+            </tr>
+            <tr>
+                <td>R-005</td>
+                <td>Exchange rate fluctuations</td>
+                <td>Financial</td>
+                <td>3</td>
+                <td>4</td>
+                <td class="risk-high-bg">High</td>
+                <td>Monitored</td>
+                <td>Sep 30, 2025</td>
+                <td></td>
+                <td>Finance</td>
+            </tr>
+            <tr>
+                <td>R-006</td>
+                <td>Key personnel turnover</td>
+                <td>HR</td>
+                <td>3</td>
+                <td>3</td>
+                <td class="risk-high-bg">High</td>
+                <td>Active</td>
+                <td>Aug 1, 2025</td>
+                <td>Oct 15, 2025</td>
+                <td>HR Department</td>
+            </tr>
+            <tr>
+                <td>R-007</td>
+                <td>Product quality issues</td>
+                <td>Operational</td>
+                <td>4</td>
+                <td>2</td>
+                <td class="risk-high-bg">High</td>
+                <td>Mitigated</td>
+                <td>Jul 15, 2025</td>
+                <td>Aug 30, 2025</td>
+                <td>Quality Assurance</td>
+            </tr>
+            <tr>
+                <td>R-008</td>
+                <td>Market share loss to competitors</td>
+                <td>Strategic</td>
+                <td>3</td>
+                <td>3</td>
+                <td class="risk-medium-bg">Medium</td>
+                <td>Active</td>
+                <td>Dec 31, 2025</td>
+                <td></td>
+                <td>Marketing</td>
+            </tr>
+            <tr>
+                <td>R-009</td>
+                <td>Business interruption due to natural disaster</td>
+                <td>Operational</td>
+                <td>5</td>
+                <td>1</td>
+                <td class="risk-medium-bg">Medium</td>
+                <td>Monitored</td>
+                <td>Nov 15, 2025</td>
+                <td></td>
+                <td>Business Continuity</td>
+            </tr>
+            <tr>
+                <td>R-010</td>
+                <td>Intellectual property infringement</td>
+                <td>Legal</td>
+                <td>3</td>
+                <td>2</td>
+                <td class="risk-low-bg">Low</td>
+                <td>Mitigated</td>
+                <td>Oct 1, 2025</td>
+                <td></td>
+                <td>Legal Dept</td>
+            </tr>
+            <!-- Add more rows as needed -->
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <!-- Risk Category Breakdown -->
+    <div class="section-title">Risk Category Breakdown</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Severe</th>
+                <th>High</th>
+                <th>Medium</th>
+                <th>Low</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Operational</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Strategic</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Technology</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Financial</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Legal</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>HR</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <!-- Instructions for Risk Assessment -->
+    <div class="section-title">Risk Assessment Guidelines</div>
+    <table>
+        <tr>
+            <th colspan="2">Impact Criteria</th>
+            <th colspan="2">Likelihood Criteria</th>
+        </tr>
+        <tr>
+            <td>5 - Catastrophic</td>
+            <td>Severe impact on operations, financial loss >$1M</td>
+            <td>5 - Almost Certain</td>
+            <td>>80% chance of occurrence</td>
+        </tr>
+        <tr>
+            <td>4 - Major</td>
+            <td>Major impact, financial loss $500K-$1M</td>
+            <td>4 - Likely</td>
+            <td>60-80% chance of occurrence</td>
+        </tr>
+        <tr>
+            <td>3 - Moderate</td>
+            <td>Moderate impact, financial loss $100K-$500K</td>
+            <td>3 - Possible</td>
+            <td>40-60% chance of occurrence</td>
+        </tr>
+        <tr>
+            <td>2 - Minor</td>
+            <td>Minor impact, financial loss $10K-$100K</td>
+            <td>2 - Unlikely</td>
+            <td>20-40% chance of occurrence</td>
+        </tr>
+        <tr>
+            <td>1 - Insignificant</td>
+            <td>Minimal impact, financial loss <$10K</td>
+            <td>1 - Rare</td>
+            <td><20% chance of occurrence</td>
+        </tr>
+    </table>
+    
+    <div class="footer">
+        <p>Risk Management Dashboard v1.0 | © Your Company 2025</p>
+        <p>Risk Categories: Severe, High, Medium, Low</p>
+    </div>
+</body>
+</html>
